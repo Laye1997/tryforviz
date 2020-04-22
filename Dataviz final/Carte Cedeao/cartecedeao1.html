@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Cartes Representative des pays de la Cedeao</title>
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: white;
+  background-color: black; 
+}
+
+#content .info {
+  width: 100px;
+  height: 30px;
+  background: red;
+  position: relative;
+  animation: mymove infinite;
+  animation-duration: 3s;
+ 
+}
+
+#content .map path {
+  
+  stroke: blue;
+  }
+#content .map path :hover {
+      fill: red;
+    }
+#content .bounding-box rect {
+  fill: none;
+  stroke: #333;
+  stroke-dasharray: 2,1;
+}
+
+#content .centroid {
+  display: none;
+}
+
+#content .centroid circle {
+  fill: blue;
+}
+
+
+
+
+@keyframes mymove {
+  from {top: -80px;}
+  to {top: 140px;}
+}
+
+#content {
+  margin:10px 10%;
+  border:2px solid #000;
+  border-radius: 5px;
+
+  height:100%;
+  overflow:hidden;
+  background: black;
+}
+
+div.masouris {
+    position: absolute;
+    text-align: center;
+    color: black;
+    width: 175px;
+    height: 37px;
+    font: 18px sans-serif;
+    background: grey;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+</style>
+
+<body>
+  <div id="content">
+    <div class="info">Carte representative des pays de la cedeao</div>
+    <svg width="500px" height="360px">
+      <g class="map"></g>
+      <g class="bounding-box"><rect></rect></g>
+      <g class="centroid"><circle r="4"></circle><text></text></g>
+    </svg>
+  </div>
+
+  <div class="énoncé">
+    <h1>Presentation Cedeao</h1>
+            <p> La Communauté économique des États de l'Afrique de l'Ouest, est une organisation intergouvernementale ouest-africaine créée le 28 mai 1975. C'est la principale structure destinée à coordonner les actions des pays de l’Afrique de l'Ouest.</p>
+            <p> La Diversité Biologique constitue une des
+principales sources contribuant au
+développement économique de notre sous
+région.Cependant le faible support apporté au secteur risque de
+compromettre sa survie. La CEDEAO en
+étroite collaboration avec ses partenaires
+sous régionaux et internationaux multiplie
+les efforts en vue de sa sauvegarde. </p>
+            <p> Il regroupe les pays suivants </p>
+            <ol>
+                <li> Senegal</li>
+                <li> Cote d'ivoire</li>
+                <li> Nigeria</li>
+                <li> Niger</li>
+                <li> Mali</li>
+                <li> Gambie</li>
+                <li> Sierra leone</li>
+                <li> guinee</li>
+                <li> Guinee bissau</li>
+                <li> Cap vert</li>
+                            
+            </ol>
+        </div>
+
+
+  <script src="d3.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+
+  <script>
+
+/*window.onclick = myFunction;
+
+function myFunction() {
+document.getElementsByTagName("BODY")[0].style.backgroundColor = "lightblue ";}  
+*/  
+
+var projection = d3.geoMercator()
+  .scale(800)
+  .translate([200, 280])
+  .center([-5, 9]);
+ 
+
+
+var geoGenerator = d3.geoPath()
+  .projection(projection);
+
+
+
+function update(geojson) {
+
+ /////////
+  var div = d3.select("body").append("div")   
+    .attr("class", "masouris")               
+    .style("opacity", 0);
+ ///////
+
+  var u = d3.select('#content g.map')
+    .selectAll('path')
+    .data(geojson.features);
+
+    u.enter()
+    .append('path')
+    .attr("id", function(d,i) { return d.id; })
+    .style("fill", function(d,i) { return  d.properties.color; })
+    .attr('d', geoGenerator)
+    //.on('mouseover', handleMouseover);
+  .on("mouseover", function(d) {
+            div.transition()        
+                .duration(200)
+                .style("opacity", .9);     
+           // div.html("" + d.properties.name +)  
+      div.html("Département : " + d.properties.name + "<br/>"
+                  +  "Pourcentage ex0portation : " + d.properties.name)
+                .style("left", (d3.event.pageX + 30) + "px")     
+                .style("top", (d3.event.pageY - 30) + "px")
+        });
+  
+}
+// REQUEST DATA
+d3.json('africa.json', function(err, json) {
+  update(json)
+})
+
+
+  </script>
+</body>
+</html>

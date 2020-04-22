@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Cartes Representative des pays de la Cedeao</title>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <!--script src="bootstrap/css/bootstrap.min.css"></script>
+  <script src="bootstrap/css/bootstrap.css"></script-->
+  <!---  ---->
+	<script>
+ function cartecd() {
+    var margin = {
+      top: 50,
+      right: 30,
+      bottom: 40,
+      left: 400
+    };
+
+    var width = 1000 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var x = d3.scaleLinear()
+      .range([0, width]);
+
+    var y = d3.scaleBand()
+      .range([height, 0]);
+    var xAxis = d3.axisTop(x)
+      .ticks(10, "%");
+
+    var yAxis = d3.axisLeft(y);
+    d3.csv("data1.csv", function(error, data) {
+      if (error) throw error;
+
+      data.forEach(function(d) {
+        return d.frequency = +d.frequency;
+      });
+
+      data.sort(function(a, b) {
+        return a.frequency - b.frequency;
+      });
+      x.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+      y.domain(data.map(function(d) { return d.pays; }))
+        .paddingInner(0.1);
+      svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(-3, 0)")
+        .call(yAxis);
+
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0,-3)")
+        .call(xAxis);
+      svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", 0)
+        .attr("height", y.bandwidth())
+        .attr("y", function(d) { return y(d.pays); })
+        .attr("width", function(d) { return x(d.frequency);
+        
+        });
+    });
+	}</script>
+  <!--      -->
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: white;
+  background-color: gray; 
+}
+
+#content .info {
+color: black;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  /*background: red;*/
+  position: relative;
+  animation: mymove infinite;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+  margin-left:-600px;
+ 
+}
+
+#content .map path {
+  
+  stroke: blue;
+  }
+#content .map path :hover {
+      fill: red;
+    }
+#content .bounding-box rect {
+  fill: none;
+  stroke: #333;
+  stroke-dasharray: 2,1;
+}
+
+#content .centroid {
+  display: none;
+}
+
+#content .centroid circle {
+  fill: blue;
+}
+
+
+
+
+@keyframes mymove {
+  from {top: -80px;}
+  to {top: 140px;}
+}
+
+#content {
+  margin:10px 10%;
+  border:2px solid #000;
+  border-radius: 5px;
+
+  height:100%;
+  overflow:hidden;
+  background: white;
+}
+
+div.masouris {
+    position: absolute;
+    text-align: center;
+    color: black;
+    width: 175px;
+    height: 37px;
+    font: 18px sans-serif;
+    background: grey;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+</style>
+
+<body>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" align="left"> 
+		<!--  id=content  -->
+		<div id="content" class="col-md-8">
+			<div class="info">Carte representative des pays de la cedeao</div>
+			<!--svg width="500px" height="360px"-->
+			<svg width="500px" height="360px">
+			  <g class="map"></g>
+			  <g class="bounding-box"><rect></rect></g>
+			  <g class="centroid"><circle r="4"></circle><text></text></g>
+			</svg>
+		</div>
+		
+	</div>
+	</div>
+	<br>
+	<!--div class="row">
+		<div class="col-md-6"--> 
+       <div class="énoncé">
+            <div align="left">
+            <ol>
+                <li style="color:#F7464A ">Combustibles </li>
+                <li style="color: blue ">Coton </li>
+                <li style="color: #CD5C5C">Poissons et Crustacés </li>
+                <li style="color: #FDB45C"> Preparation alimentaires diverses</li>
+                <li style="color:green ">Ciments,Chaux,Souffre </li>
+                <li style="color: #AEB6BF"> Ciments,Chaux,Souffre,...</li>
+                <li style="color: #E67E22"> "Produits de navigation maritime ou fluviale"</li>
+                <li style="color: #949FB1"> "Tabacs et succedents de tabac"</li>
+                 <li style="color: red">"Autres produits"</li>
+
+            </ol>
+        </div>
+        </div>
+				
+				<div class=""> 
+					<!--   id=diagbar  -->
+					<div id="diagbarr" align="left">
+						<p style="margin-top:50px;"> <h4>Contribution importante des differentes etats dans le commerce interegional </h4></p>
+						<script>
+							cartecd();
+						</script>
+					</div>
+				</div>
+				<!--/div>
+		</div-->
+	</div>
+  
+
+<!---------->
+<br>
+	<div class=" ">
+		<h1>Presentation Cedeao</h1>
+            <p> La Communauté économique des États de l'Afrique de l'Ouest, est une organisation intergouvernementale ouest-africaine créée le 28 mai 1975. C'est la principale structure destinée à coordonner les actions des pays de l’Afrique de l'Ouest.</p>
+            <p> La Diversité Biologique constitue une des
+				principales sources contribuant au
+				développement économique de notre sous
+				région.Cependant le faible support apporté au secteur risque de
+				compromettre sa survie. La CEDEAO en
+				étroite collaboration avec ses partenaires
+				sous régionaux et internationaux multiplie
+				les efforts en vue de sa sauvegarde. </p>
+            <p> Il regroupe les pays suivants </p>
+            <ol>
+                <li> Senegal</li>
+                <li> Cote d'ivoire</li>
+                <li> Nigeria</li>
+                <li> Niger</li>
+                <li> Mali</li>
+                <li> Gambie</li>
+                <li> Sierra leone</li>
+                <li> guinee</li>
+                <li> Guinee bissau</li>
+                <li> Cap vert</li>
+                            
+            </ol>
+        </div>
+<!-------->
+
+  <script src="d3/d3.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+
+ <script>
+
+/*window.onclick = myFunction;
+
+function myFunction() {
+document.getElementsByTagName("BODY")[0].style.backgroundColor = "lightblue ";}  
+*/  
+
+var projection = d3.geoMercator()
+  .scale(800)
+  .translate([200, 280])
+  .center([-5, 9]);
+ 
+
+
+var geoGenerator = d3.geoPath()
+  .projection(projection);
+
+
+
+function update(geojson) {
+
+ /////////
+  var div = d3.select("body").append("div")   
+    .attr("class", "masouris")               
+    .style("opacity", 0);
+ ///////
+
+  var u = d3.select('#content g.map')
+    .selectAll('path')
+    .data(geojson.features);
+
+    u.enter()
+    .append('path')
+    .attr("id", function(d,i) { return d.id; })
+    .style("fill", function(d,i) { return  d.properties.color; })
+    .attr('d', geoGenerator)
+    //.on('mouseover', handleMouseover);
+  .on("mouseover", function(d) {
+            div.transition()        
+                .duration(200)
+                .style("opacity", .9);     
+            //div.html("" + d.properties.name +)  
+      div.html("Département : " + d.properties.name + "<br/>"
+                  +  "Pourcentage exportation : " + d.properties.pourcentage)
+                .style("left", (d3.event.pageX + 30) + "px")     
+                .style("top", (d3.event.pageY - 30) + "px")
+        });
+  
+}
+// REQUEST DATA
+d3.json('africa.json', function(err, json) {
+  update(json)
+})
+
+
+  </script>
+
+  
+  <!----------------->
+  
+  <script>
+            var canvas = d3.select("body")
+                            .append("svg")
+                            .attr("width",600)
+                            .attr("height",600);
+                        
+                              var data = [
+        {classe: "Combustibles", valeur: 0.66*1000},
+    {classe: "Coton", valeur: 0.012*1000},
+    {classe: "Poissons et Crustacés", valeur: 0.009*1000},
+    {classe: "Preparation alimentaires diverses", valeur: 0.01*1000},
+    {classe: "Ciments,Chaux,Souffre,...", valeur: 0.04*1000},
+    {classe: "Produits de navigation maritime ou fluviale", valeur: 0.02*1000},
+    {classe: "Tabacs et succedents de tabac", valeur: 0.007*1000},
+    {classe: "Autres produits", valeur: 0.222*1000}
+];
+
+            
+            var group = canvas.append("g").attr("transform","translate(300,300)");
+            
+            // Question 1
+            var color = d3.scale.ordinal().range(["#F7464A", "blue", "#CD5C5C", "#FDB45C", "green", "#AEB6BF", "#E67E22", "#949FB1", "red"]);
+            
+            //Question 2
+            // Utiliser entre autres les fonctions d3.svg.arc(), d3.layout.pie()
+            var arc = d3.svg.arc()
+                            .innerRadius(0)
+                            .outerRadius(250);
+                            
+            var pie = d3.layout.pie()
+                                .value(function(d) {return d.valeur;})
+                                ;
+                                
+            var arcs = group.selectAll(".arc")
+                            .data(pie(data))
+                            .enter()
+                            .append("g")
+                            .attr("class","arc");
+                            
+            arcs.append("path")
+                        .attr("d",arc)
+                        .attr("fill", function(d) {return color(d.data.classe)})
+                        ;
+                        
+                           
+                    
+        </script>
+  
+</body>
+</html>
