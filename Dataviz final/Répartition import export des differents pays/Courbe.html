@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Cartes Representative des pays de la Cedeao</title>
+   <script src="libs/jquery/jquery.min.js"></script>
+    <script src="libs/bootstrap.min.js"></script>
+        <script src="libs/chart.js/Chart.min.js"></script>
+        <script src="data.js"></script>
+        <script src="fonctions.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="d3/d3.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <!--script src="bootstrap/css/bootstrap.min.css"></script>
+  <script src="bootstrap/css/bootstrap.css"></script-->
+  <!---  ---->
+	<script>
+ function cartecd() {
+    var margin = {
+      top: 50,
+      right: 30,
+      bottom: 40,
+      left: 400
+    };
+
+    var width = 1000 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var x = d3.scaleLinear()
+      .range([0, width]);
+
+    var y = d3.scaleBand()
+      .range([height, 0]);
+    var xAxis = d3.axisTop(x)
+      .ticks(10, "%");
+
+    var yAxis = d3.axisLeft(y);
+    d3.csv("data1.csv", function(error, data) {
+      if (error) throw error;
+
+      data.forEach(function(d) {
+        return d.frequency = +d.frequency;
+      });
+
+      data.sort(function(a, b) {
+        return a.frequency - b.frequency;
+      });
+      x.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+      y.domain(data.map(function(d) { return d.pays; }))
+        .paddingInner(0.1);
+      svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(-3, 0)")
+        .call(yAxis);
+
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0,-3)")
+        .call(xAxis);
+      svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", 0)
+        .attr("height", y.bandwidth())
+        .attr("y", function(d) { return y(d.pays); })
+        .attr("width", function(d) { return x(d.frequency);
+        
+        });
+    });
+	}</script>
+  <!--      -->
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: white;
+  background-color: gray; 
+}
+
+#content .info {
+color: black;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  /*background: red;*/
+  position: relative;
+  animation: mymove infinite;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+  margin-left:-600px;
+ 
+}
+
+#content .map path {
+  
+  stroke: blue;
+  }
+#content .map path :hover {
+      fill: red;
+    }
+#content .bounding-box rect {
+  fill: none;
+  stroke: #333;
+  stroke-dasharray: 2,1;
+}
+
+#content .centroid {
+  display: none;
+}
+
+#content .centroid circle {
+  fill: blue;
+}
+
+
+
+
+@keyframes mymove {
+  from {top: -80px;}
+  to {top: 140px;}
+}
+
+#content {
+  margin:10px 10%;
+  border:2px solid #000;
+  border-radius: 5px;
+
+  height:100%;
+  overflow:hidden;
+  background: white;
+}
+
+div.masouris {
+    position: absolute;
+    text-align: center;
+    color: black;
+    width: 175px;
+    height: 37px;
+    font: 18px sans-serif;
+    background: grey;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+</style>
+
+<body>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" align="center"> 
+		<!--  id=content  -->
+		<div id="content" class="col-md-8">
+			<div class="info">Carte representative des pays de la cedeao</div>
+			<!--svg width="500px" height="360px"-->
+			<svg width="500px" height="360px">
+			  <g class="map"></g>
+			  <g class="bounding-box"><rect></rect></g>
+			  <g class="centroid"><circle r="4"></circle><text></text></g>
+			</svg>
+		</div>
+		
+	</div>
+	</div>
+	<br>
+	<!--div class="row">
+		<div class="col-md-6"--> 
+				<div class="" > 
+					<!-- id=chartContainer   -->
+					<div align="center">
+						<h1>Titre du diagramme circulaire</h1>
+						<div id="chartContainer"  style="height: 400px; width: 740px;"></div>
+					</div>
+				</div>
+				<div class=""> 
+					<!--   id=diagbar  -->
+					<div id="diagbarr" align="center">
+						<p style="margin-top:50px;"> <h4>Contribution importante des differentes etats dans le commerce interegional </h4></p>
+						<script>
+							cartecd();
+						</script>
+					</div>
+				</div>
+				<!--/div>
+		</div-->
+	</div>
+  
+
+<!---------->
+<br>
+	<div class=" ">
+		<h1>Presentation Cedeao</h1>
+            <p> La Communauté économique des États de l'Afrique de l'Ouest, est une organisation intergouvernementale ouest-africaine créée le 28 mai 1975. C'est la principale structure destinée à coordonner les actions des pays de l’Afrique de l'Ouest.</p>
+            <p> La Diversité Biologique constitue une des
+				principales sources contribuant au
+				développement économique de notre sous
+				région.Cependant le faible support apporté au secteur risque de
+				compromettre sa survie. La CEDEAO en
+				étroite collaboration avec ses partenaires
+				sous régionaux et internationaux multiplie
+				les efforts en vue de sa sauvegarde. </p>
+            <p> Il regroupe les pays suivants </p>
+            <ol>
+                <li> Senegal</li>
+                <li> Cote d'ivoire</li>
+                <li> Nigeria</li>
+                <li> Niger</li>
+                <li> Mali</li>
+                <li> Gambie</li>
+                <li> Sierra leone</li>
+                <li> guinee</li>
+                <li> Guinee bissau</li>
+                <li> Cap vert</li>
+                            
+            </ol>
+        </div>
+<!-------->
+
+
+  <script>
+
+/*window.onclick = myFunction;
+
+function myFunction() {
+document.getElementsByTagName("BODY")[0].style.backgroundColor = "lightblue ";}  
+*/  
+
+var projection = d3.geoMercator()
+  .scale(800)
+  .translate([200, 280])
+  .center([-5, 9]);
+ 
+
+
+var geoGenerator = d3.geoPath()
+  .projection(projection);
+
+
+
+function update(geojson) {
+
+ /////////
+  var div = d3.select("body").append("div")   
+    .attr("class", "masouris")               
+    .style("opacity", 0);
+ ///////
+
+  var u = d3.select('#content g.map')
+    .selectAll('path')
+    .data(geojson.features);
+
+    u.enter()
+    .append('path')
+    .attr("id", function(d,i) { return d.id; })
+    .style("fill", function(d,i) { return  d.properties.color; })
+    .attr('d', geoGenerator)
+    //.on('mouseover', handleMouseover);
+  .on("mouseover", function(d) {
+            div.transition()        
+                .duration(200)
+                .style("opacity", .9);     
+            div.html("" + d.properties.name + "")  
+      /*div.html("Département : " + d.properties.name + "<br/>"
+                  +  "Région : " + d.properties.name)*/
+                .style("left", (d3.event.pageX + 30) + "px")     
+                .style("top", (d3.event.pageY - 30) + "px")
+        });
+  
+}
+// REQUEST DATA
+d3.json('africa.json', function(err, json) {
+  update(json)
+})
+
+
+  </script>
+  
+  <!----------------->
+  
+ <script>
+
+
+
+var data = {
+
+  labels: [
+
+    '2013', '2014', '2015',
+
+    '2016', '2017', '2018'
+
+  ],
+
+  series: [
+
+    {
+
+      label: 'Balance Commerciale',
+
+      values: [-9989, 1800, 0, 700, 2000, 1900]
+
+    },
+
+    {
+
+      label: 'Total Import',
+
+      values: [7500, 7500, 8000, 12500, 6500, 7000]
+
+    },
+
+    {
+
+      label: 'Total Export',
+
+      values: [6300, 9050, 8002, 13002,9050]
+
+    },]
+
+};
+
+
+
+var chartWidth       = 300,
+
+    barHeight        = 20,
+
+    groupHeight      = barHeight * data.series.length,
+
+    gapBetweenGroups = 10,
+
+    spaceForLabels   = 150,
+
+    spaceForLegend   = 150;
+
+
+
+// Zip the series data together (first values, second values, etc.)
+
+var zippedData = [];
+
+for (var i=0; i<data.labels.length; i++) {
+
+  for (var j=0; j<data.series.length; j++) {
+
+    zippedData.push(data.series[j].values[i]);
+
+  }
+
+}
+
+
+
+// Color scale
+
+var color = d3.scale.category20();
+
+var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
+
+
+
+var x = d3.scale.linear()
+
+    .domain([0, d3.max(zippedData)])
+
+    .range([0, chartWidth]);
+
+
+
+var y = d3.scale.linear()
+
+    .range([chartHeight + gapBetweenGroups, 0]);
+
+
+
+var yAxis = d3.svg.axis()
+
+    .scale(y)
+
+    .tickFormat('')
+
+    .tickSize(0)
+
+    .orient("left");
+
+
+
+// Specify the chart area and dimensions
+
+var chart = d3.select(".chart")
+
+    .attr("width", spaceForLabels + chartWidth + spaceForLegend)
+
+    .attr("height", chartHeight);
+
+
+
+// Create bars
+
+var bar = chart.selectAll("g")
+
+    .data(zippedData)
+
+    .enter().append("g")
+
+    .attr("transform", function(d, i) {
+
+      return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length))) + ")";
+
+    });
+
+
+
+// Create rectangles of the correct width
+
+bar.append("rect")
+
+    .attr("fill", function(d,i) { return color(i % data.series.length); })
+
+    .attr("class", "bar")
+
+    .attr("width", x)
+
+    .attr("height", barHeight - 1);
+
+
+
+// Add text label in bar
+
+bar.append("text")
+
+    .attr("x", function(d) { return x(d) - 3; })
+
+    .attr("y", barHeight / 2)
+
+    .attr("fill", "red")
+
+    .attr("dy", ".35em")
+
+    .text(function(d) { return d; });
+
+
+
+// Draw labels
+
+bar.append("text")
+
+    .attr("class", "label")
+
+    .attr("x", function(d) { return - 10; })
+
+    .attr("y", groupHeight / 2)
+
+    .attr("dy", ".35em")
+
+    .text(function(d,i) {
+
+      if (i % data.series.length === 0)
+
+        return data.labels[Math.floor(i/data.series.length)];
+
+      else
+
+        return ""});
+
+
+
+chart.append("g")
+
+      .attr("class", "y axis")
+
+      .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups/2 + ")")
+
+      .call(yAxis);
+
+
+
+// Draw legend
+
+var legendRectSize = 18,
+
+    legendSpacing  = 4;
+
+
+
+var legend = chart.selectAll('.legend')
+
+    .data(data.series)
+
+    .enter()
+
+    .append('g')
+
+    .attr('transform', function (d, i) {
+
+        var height = legendRectSize + legendSpacing;
+
+        var offset = -gapBetweenGroups/2;
+
+        var horz = spaceForLabels + chartWidth + 40 - legendRectSize;
+
+        var vert = i * height - offset;
+
+        return 'translate(' + horz + ',' + vert + ')';
+
+    });
+
+
+
+legend.append('rect')
+
+    .attr('width', legendRectSize)
+
+    .attr('height', legendRectSize)
+
+    .style('fill', function (d, i) { return color(i); })
+
+    .style('stroke', function (d, i) { return color(i); });
+
+
+
+legend.append('text')
+
+    .attr('class', 'legend')
+
+    .attr('x', legendRectSize + legendSpacing)
+
+    .attr('y', legendRectSize - legendSpacing)
+
+    .text(function (d) { return d.label; });
+
+
+
+</script>
+  
+</body>
+</html>
