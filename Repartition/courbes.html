@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Projet</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="bootstrap/css/bootstrap.min.css"  rel="stylesheet" type="text/css" />
+		<!--link rel="stylesheet" href="libs/bootstrap.min.css"-->
+    </head>
+    <body class="hold-transition sidebar-mini">
+		<div class="">
+			<nav class="navbar navbar-inverse">
+			  <div class="container-fluid">
+				<div class="navbar-header">
+				  <a class="navbar-brand" href="../index1.html">CEDEAO</a>
+				</div>
+				<ul class="nav navbar-nav">
+				  <li ><a href="../index.html">Accueil</a></li>				  
+				</ul>
+			  </div>
+			</nav>
+		</div>
+
+        <div class="container" style="width: 90%;margin: auto;"><br/><br>
+            			
+            <div class="row col-md-12">
+                <div class="col-md-4">
+                    <select style="margin:0px;width: 100%;" type="text" placeholder="Pays" autocomplete="off" class="form-control" list="listPays" name="" id="pays">
+                    </select>
+                </div>
+                <div class="col-md-3">
+                   <div style="background-color:grey;color:white; padding: 6px;position: absolute;left: -10px;border:1px solid grey ">
+                    DU
+                   </div> <input style="margin:0px;width: 100%;" type="date" placeholder="Date" autocomplete="off" class="form-control" list="listPays" name="" id="dateDebutStatistiques">
+                    <datalist id="listPays"></datalist>
+                </div>
+                <div class="col-md-3">
+                    <div style="background-color:grey;color:white; padding: 6px;position: absolute;left: -10px;border:1px solid grey ">
+                        AU
+                       </div> <input style="margin:0px;width: 100%;" type="date" placeholder="Date" autocomplete="off" class="form-control" list="listPays" name="" id="dateFinStatistiques">
+                    <datalist id="listPays"></datalist>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-info" onclick="loadGraphes();">OK</button>
+                </div>
+            </div>
+            <hr>
+			<br><br/><br/>
+            <!-- <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas> -->
+            <div class="row">
+                <div class="col-md-6" >
+                    <canvas id="pieChartImportExport" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    <br><div style="width: 100%;text-align: center;">
+                        <u><h4>Répartition des imports exports (Moyenne <span class="selectedCountry"></span>) de <span class="dateMin"></span> à <span class="dateMax"></span></h4></u>
+                    </div>
+                </div>
+                <div class="col-md-6" >
+                    <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    <br><div style="width: 100%;text-align: center;">
+                        <u><h4>Répartition des trades(Moyenne <span class="selectedCountry"></span>) de <span class="dateMin"></span> à <span class="dateMax"></span></h4></u>
+                    </div>
+                </div>
+            </div><br/><br/><br/>
+            <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            <br><div style="width: 100%;text-align: center;">
+                <u><h4>Courbe d'evolution des trades (Moyenne  <span class="selectedCountry"></span>) de <span class="dateMin"></span> à <span class="dateMax"></span></h4></u>
+            </div>
+            <br/><br/><br/>
+            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            <br><div style="width: 100%;text-align: center;">
+                <u><h4>Histogramme des trades (Moyenne  <span class="selectedCountry"></span>) de <span class="dateMin"></span> à <span class="dateMax"></span></h4></u>
+            </div>
+        </div>
+        <br/><br/>
+        <script src="libs/jquery/jquery.min.js"></script>
+        <script src="libs/bootstrap.min.js"></script>
+        <script src="libs/chart.js/Chart.min.js"></script>
+        <script src="data.js"></script>
+        <script src="fonctions.js"></script>
+        <script>
+            listPays();
+            loadGraphes();
+        </script>
+</body>
+</html>

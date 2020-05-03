@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Cartes Representative des pays de la Cedeao</title>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <!--link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"-->
+  <link href="bootstrap/css/bootstrap.min.css"  rel="stylesheet" type="text/css" />
+  <!---  ---->
+	<script>
+ function cartecd() {
+    var margin = {
+      top: 50,
+      right: 30,
+      bottom: 40,
+      left: 400
+    };
+
+    var width = 1000 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var x = d3.scaleLinear()
+      .range([0, width]);
+
+    var y = d3.scaleBand()
+      .range([height, 0]);
+    var xAxis = d3.axisTop(x)
+      .ticks(10, "%");
+
+    var yAxis = d3.axisLeft(y);
+    d3.csv("data1.csv", function(error, data) {
+      if (error) throw error;
+
+      data.forEach(function(d) {
+        return d.frequency = +d.frequency;
+      });
+
+      data.sort(function(a, b) {
+        return a.frequency - b.frequency;
+      });
+      x.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+      y.domain(data.map(function(d) { return d.pays; }))
+        .paddingInner(0.1);
+      svg.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(-3, 0)")
+        .call(yAxis);
+
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0,-3)")
+        .call(xAxis);
+      svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", 0)
+        .attr("height", y.bandwidth())
+        .attr("y", function(d) { return y(d.pays); })
+        .attr("width", function(d) { return x(d.frequency);
+        
+        });
+    });
+	}</script>
+  <!--      -->
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: white;
+  background-color: white; 
+}
+
+#content .info {
+color: black;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  /*background: red;*/
+  position: relative;
+  animation: mymove infinite;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
+  margin-left:-600px;
+ 
+}
+
+#content .map path {
+  
+  stroke: blue;
+  }
+#content .map path :hover {
+      fill: red;
+    }
+#content .bounding-box rect {
+  fill: none;
+  stroke: #333;
+  stroke-dasharray: 2,1;
+}
+
+#content .centroid {
+  display: none;
+}
+
+#content .centroid circle {
+  fill: blue;
+}
+
+
+
+
+@keyframes mymove {
+  from {top: -80px;}
+  to {top: 140px;}
+}
+
+#content {
+  margin:10px 10%;
+  border:2px solid #000;
+  border-radius: 5px;
+
+  height:100%;
+  overflow:hidden;
+  background: white;
+}
+
+div.masouris {
+    position: absolute;
+    text-align: center;
+    color: black;
+    width: 175px;
+    height: 37px;
+    font: 18px sans-serif;
+    background: grey;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+</style>
+
+<body>
+
+<!--nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">WebSiteName</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Page 1</a></li>
+      <li><a href="#">Page 2</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+  </div>
+</nav-->
+
+<div class="">
+	<nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+		<div class="navbar-header">
+		  <a class="navbar-brand" href="index1.html">Précédant</a>
+		</div>
+		<ul class="nav navbar-nav">
+		  <li class="active"><a href="index1.html">Accueil</a></li>	  
+		</ul>
+	  </div>
+	</nav>
+</div>
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-12" align="center"> 
+		<!--  id=content  -->
+		<div id="content" class="col-md-8">
+			<div class="info">Carte representative des pays de la cedeao</div>
+			<!--svg width="500px" height="360px"-->
+			<svg width="500px" height="360px">
+			  <g class="map"></g>
+			  <g class="bounding-box"><rect></rect></g>
+			  <g class="centroid"><circle r="4"></circle><text></text></g>
+			</svg>
+		</div>
+		
+	</div>
+	</div>
+	<br>
+	<!--div class="row">
+		<div class="col-md-6"--> 
+				<div class="" > 
+					<!-- id=chartContainer   -->
+					<div align="center">
+						<h1>Titre du diagramme circulaire</h1>
+						<div id="chartContainer"  style="height: 400px; width: 740px;"></div>
+					</div>
+				</div>
+				<div class=""> 
+					<!--   id=diagbar  -->
+					<div id="diagbarr" align="center">
+						<p style="margin-top:50px;"> <h4>Contribution importante des differentes etats dans le commerce interegional </h4></p>
+						<script>
+							cartecd();
+						</script>
+					</div>
+				</div>
+				<!--/div>
+		</div-->
+	</div>
+  
+
+<!---------->
+
+<!-------->
+
+  <script src="d3/d3.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+
+  <script>
+
+/*window.onclick = myFunction;
+
+function myFunction() {
+document.getElementsByTagName("BODY")[0].style.backgroundColor = "lightblue ";}  
+*/  
+
+var projection = d3.geoMercator()
+  .scale(800)
+  .translate([200, 280])
+  .center([-5, 9]);
+ 
+
+
+var geoGenerator = d3.geoPath()
+  .projection(projection);
+
+
+
+function update(geojson) {
+
+ /////////
+  var div = d3.select("body").append("div")   
+    .attr("class", "masouris")               
+    .style("opacity", 0);
+ ///////
+
+  var u = d3.select('#content g.map')
+    .selectAll('path')
+    .data(geojson.features);
+
+    u.enter()
+    .append('path')
+    .attr("id", function(d,i) { return d.id; })
+    .style("fill", function(d,i) { return  d.properties.color; })
+    .attr('d', geoGenerator)
+    //.on('mouseover', handleMouseover);
+  .on("mouseover", function(d) {
+            div.transition()        
+                .duration(200)
+                .style("opacity", .9);     
+            div.html("" + d.properties.name + "")  
+      /*div.html("Département : " + d.properties.name + "<br/>"
+                  +  "Région : " + d.properties.name)*/
+                .style("left", (d3.event.pageX + 30) + "px")     
+                .style("top", (d3.event.pageY - 30) + "px")
+        });
+  
+}
+// REQUEST DATA
+d3.json('africa.json', function(err, json) {
+  update(json)
+})
+
+
+  </script>
+  
+  <!----------------->
+  
+  <script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: ""
+	},
+	legend:{
+		cursor: "pointer",
+		itemclick: explodePie
+	},
+	data: [{
+		type: "pie",
+		showInLegend: true,
+		toolTipContent: "{name}: <strong>{y}%</strong>",
+		indexLabel: "{name} - {y}%",
+		dataPoints: [
+			{ y: 66, name: "Combustibles", exploded: true },
+			{ y: 12, name: "Coton" },
+			{ y: 9, name: "Poissons et CrustacÃ©s" },
+			{ y: 10, name: "Preparation alimentaires diverses" },
+			{ y: 40, name: "Ciments,Chaux,Souffre,..." },
+			{ y: 222, name: "Autres produits" },
+			{ y: 2, name: "Produits de navigation maritime ou fluviale" },
+			{ y: 7, name: "Tabacs et succedents de tabac"}
+		]
+	}]
+});
+
+
+chart.render();
+}
+
+function explodePie (e) {
+	if(typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
+		e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
+	} else {
+		e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+	}
+	e.chart.render();
+
+}
+</script>
+  
+</body>
+</html>
